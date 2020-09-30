@@ -72,21 +72,20 @@ create_ssh_key_pair() {
     "${BLUE}${github_uname}${GREEN} exists locally${NC}"
   while read -r github_key; do
     echo
-    #echo "${github_key}"
+    # Echo the first and last 10 chars of the key
+    echo -e "  ${GREEN}Testing key" \
+      "${BLUE}${github_key:0:15}...${github_key:(-15)}"
 
     local private_key_file="${github_keys_dir}/id_rsa_${github_uname}"
     local public_key_file="${private_key_file}.pub"
 
-    if grep \
-      --silent \
-      --fixed-strings \
-      "${github_key}" \
-      "${public_key_file}"; then
+    if grep --silent --fixed-strings "${github_key}" "${public_key_file}"; then
       found_key=true
     fi
 
-    #echo
   done <<<"$(curl --silent "https://github.com/${github_uname}.keys")"
+
+  echo
 
   if [ "${found_key}" = false ]; then
     echo -e "${RED}Error:${NC} No SSH key found for user" \
@@ -133,9 +132,9 @@ ensure_ssh_config_exists() {
   if [ -f "${ssh_config_file}" ]; then
     if grep \
       --silent \
-      --fixed-strings 
-          "${github_uname}" 
-          "${ssh_config_file}"; then
+      --fixed-strings \
+      "${github_uname}" \
+      "${ssh_config_file}"; then
 
       echo -e "${GREEN}Found SSH config entry for ${BLUE}${github_uname}${NC}"
     else
@@ -188,6 +187,9 @@ main() {
   # Make sure we have the dev-setup repo
   ensure_dev_setup_repo_exists
 
+  echo 
+  echo -e "${GREEN}Running script in ${BLUE}${dev_setup_repo_name}${NC}"
+  echo 
   # Now run the script in the dev-setup repo
   # Pass through any args e.g to use ansible tags
   # shellcheck source=/dev/null
