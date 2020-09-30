@@ -189,8 +189,9 @@ main() {
   ensure_dev_setup_repo_exists
 
   # Now run the script in the dev-setup repo
+  # Pass through any args e.g to use ansible tags
   # shellcheck source=/dev/null
-  source "${dev_setup_script}"
+  source "${dev_setup_script}" "$@"
 }
 
 main "$@"
