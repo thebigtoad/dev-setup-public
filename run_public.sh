@@ -93,6 +93,7 @@ create_ssh_key_pair() {
     echo -e "${GREEN}You need to add ssh key" \
       "${BLUE}${public_key_file}${GREEN}" \
       "to the profile of github user ${BLUE}${github_uname}${NC}"
+    exit 1
   fi
 
   # Now make sure we have ssh config for the new key
