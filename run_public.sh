@@ -68,8 +68,8 @@ create_ssh_key_pair() {
 
   # Loop over curl https://github.com/<username>.keys
   # and check that our public key is in there
-  echo -e "${GREEN}Checking if an SSH key for repo" \
-    "${BLUE}${github_uname}${GREEN} exists locally${NC}"
+  echo -e "${GREEN}Checking if a public key for repo" \
+    "${BLUE}${github_uname}${GREEN} matches ours${NC}"
   while read -r github_key; do
     echo
     # Echo the first and last 10 chars of the key
@@ -194,10 +194,12 @@ main() {
   echo 
   echo -e "${GREEN}Running script in ${BLUE}${dev_setup_repo_name}${NC}"
   echo 
+  pushd "${dev_setup_dir}" > /dev/null
   # Now run the script in the dev-setup repo
   # Pass through any args e.g to use ansible tags
   # shellcheck source=/dev/null
   source "${dev_setup_script}" "$@"
+  popd > /dev/null
 }
 
 main "$@"
