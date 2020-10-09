@@ -90,6 +90,7 @@ create_ssh_key_pair() {
   if [ "${found_key}" = false ]; then
     echo -e "${RED}Error:${NC} No SSH key found for user" \
       "${BLUE}${github_uname}${NC}"
+    echo
     echo -e "${GREEN}You need to add ssh key" \
       "${BLUE}${public_key_file}${NC}"
     echo -e "${GREEN}to the profile of github user ${BLUE}${github_uname}${NC}"
