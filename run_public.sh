@@ -172,7 +172,7 @@ main() {
   local github_uname="thebigtoad"
   local git_repo_dir="${HOME}/git_work"
   local dev_setup_repo_name="dev-setup"
-  local dev_setup_dir="${git_repo_dir}/${dev_setup_repo_name}"
+  local dev_setup_dir="${git_repo_dir}/${github_uname}/${dev_setup_repo_name}"
   local dev_setup_script="${dev_setup_dir}/run.sh"
   local ssh_config_file="${HOME}/.ssh/config"
 
@@ -193,7 +193,7 @@ main() {
   ensure_dev_setup_repo_exists
 
   echo 
-  echo -e "${GREEN}Running script in ${BLUE}${dev_setup_repo_name}${NC}"
+  echo -e "${GREEN}Running script ${BLUE}${dev_setup_script}${NC}"
   echo 
   pushd "${dev_setup_dir}" > /dev/null
   # Now run the script in the dev-setup repo
