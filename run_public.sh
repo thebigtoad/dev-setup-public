@@ -122,14 +122,17 @@ ensure_git_dir_exists() {
 
 ensure_dev_setup_repo_exists() {
 
-  if [ ! -d "${dev_setup_dir}" ]; then
-    echo -e "${GREEN}Cloning ${BLUE}${dev_setup_repo_name}" \
-      "repo to ${BLUE}${dev_setup_dir}${NC}"
+  local repo_name="$1"; shift
+  local repo_dir="${dev_setup_repo_base}/${repo_name}"
+
+  if [ ! -d "${repo_dir}" ]; then
+    echo -e "${GREEN}Cloning ${BLUE}${repo_name}" \
+      "repo to ${BLUE}${repo_dir}${NC}"
 
     git \
       clone \
-      "github.com-${github_uname}:${github_uname}/${dev_setup_repo_name}.git" \
-      "${dev_setup_dir}"
+      "github.com-${github_uname}:${github_uname}/${repo_name}.git" \
+      "${repo_dir}"
   fi
 }
 
@@ -172,6 +175,7 @@ main() {
   local github_uname="thebigtoad"
   local git_repo_dir="${HOME}/git_work"
   local dev_setup_repo_name="dev-setup"
+  local dev_setup_repo_base="${git_repo_dir}/${github_uname}"
   local dev_setup_dir="${git_repo_dir}/${github_uname}/${dev_setup_repo_name}"
   local dev_setup_script="${dev_setup_dir}/run.sh"
   local ssh_config_file="${HOME}/.ssh/config"
@@ -189,8 +193,9 @@ main() {
   # Github
   create_ssh_key_pair "${github_uname}"
 
-  # Make sure we have the dev-setup repo
-  ensure_dev_setup_repo_exists
+  # Make sure we have the dev-setup* repos
+  ensure_dev_setup_repo_exists "dev-setup"
+  ensure_dev_setup_repo_exists "dev-setup-public"
 
   echo 
   echo -e "${GREEN}Running script ${BLUE}${dev_setup_script}${NC}"
